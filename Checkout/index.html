@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CarryGuard — Subscribe</title>
+  <script src="https://js.stripe.com/v3/"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0f0f0f;
+      color: #f3f4f6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    header {
+      width: 100%;
+      max-width: 480px;
+      padding: 24px 20px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-dot {
+      width: 10px; height: 10px;
+      background: #22c55e;
+      border-radius: 50%;
+    }
+    header h1 { font-size: 20px; font-weight: 800; }
+    .container {
+      width: 100%;
+      max-width: 480px;
+      padding: 24px 20px 48px;
+    }
+    .plan-selector {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .plan-btn {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1.5px solid #1f2937;
+      background: #1a1a1a;
+      color: #6b7280;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .plan-btn.active-carrier  { border-color: #22c55e; color: #22c55e; }
+    .plan-btn.active-guardian { border-color: #818cf8; color: #818cf8; }
+    .period-selector {
+      display: flex;
+      background: #1a1a1a;
+      border: 1px solid #1f2937;
+      border-radius: 10px;
+      padding: 3px;
+      margin-bottom: 20px;
+    }
+    .period-btn {
+      flex: 1;
+      padding: 8px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: #4b5563;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+    .period-btn.active { background: #1f2937; color: #f3f4f6; }
+    .save-badge {
+      display: inline-block;
+      background: #14532d;
+      color: #22c55e;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 4px;
+      padding: 1px 5px;
+      margin-left: 6px;
+    }
+    .price-summary {
+      text-align: center;
+      color: #6b7280;
+      font-size: 13px;
+      margin-bottom: 20px;
+    }
+    #checkout-container { width: 100%; }
+    .loading {
+      text-align: center;
+      color: #4b5563;
+      padding: 40px 0;
+      font-size: 14px;
+    }
+    .error-msg {
+      background: #1f0a0a;
+      border: 1px solid #7f1d1d;
+      color: #f87171;
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 13px;
+      margin-bottom: 16px;
+      display: none;
+    }
+    .referral-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .referral-row input {
+      flex: 1;
+      background: #1a1a1a;
+      border: 1.5px solid #1f2937;
+      border-radius: 8px;
+      color: #f3f4f6;
+      font-size: 13px;
+      padding: 10px 12px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .referral-row input::placeholder { color: #4b5563; text-transform: none; }
+    .referral-row input:focus { border-color: #374151; }
+    .referral-row input.valid   { border-color: #22c55e; }
+    .referral-row input.invalid { border-color: #ef4444; }
+    .referral-apply {
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: 1.5px solid #1f2937;
+      background: #1f2937;
+      color: #f3f4f6;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+    .referral-apply:hover { background: #374151; }
+    .referral-status {
+      font-size: 12px;
+      margin-top: -14px;
+      margin-bottom: 14px;
+      display: none;
+    }
+    .referral-status.ok  { color: #22c55e; }
+    .referral-status.err { color: #ef4444; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-dot"></div>
+    <h1>CarryGuard</h1>
+  </header>
+
+  <div class="container">
+    <div class="plan-selector">
+      <button class="plan-btn active-carrier" id="btn-carrier" onclick="selectPlan('carrier')">
+        Carrier<br><small style="font-weight:400;color:#9ca3af">$2.99/mo</small>
+      </button>
+      <button class="plan-btn" id="btn-guardian" onclick="selectPlan('guardian')">
+        Guardian<br><small style="font-weight:400;color:#9ca3af">$4.99/mo</small>
+      </button>
+    </div>
+
+    <div class="period-selector">
+      <button class="period-btn" id="btn-monthly" onclick="selectPeriod('monthly')">Monthly</button>
+      <button class="period-btn active" id="btn-annual" onclick="selectPeriod('annual')">
+        Annual <span class="save-badge" id="savings-badge">Save 30%</span>
+      </button>
+    </div>
+
+    <div class="price-summary" id="price-summary">Carrier · $24.99/year · ~$2.08/mo</div>
+
+    <div class="referral-row">
+      <input type="text" id="referral-input" placeholder="Referral code (optional)" maxlength="10" />
+      <button class="referral-apply" onclick="applyReferral()">Apply</button>
+    </div>
+    <div class="referral-status" id="referral-status"></div>
+
+    <div class="error-msg" id="error-msg"></div>
+    <div id="checkout-container"><div class="loading">Loading secure checkout…</div></div>
+  </div>
+
+  <script>
+    const API_BASE = 'https://optimistic-wonder-production-22e8.up.railway.app';
+
+    const PRICES = {
+      carrier:  { monthly: '$2.99/mo',  monthlyBtn: '$2.99/mo',  annual: '$24.99/yr · ~$2.08/mo', annualBtn: '$24.99/yr', savings: 30 },
+      guardian: { monthly: '$4.99/mo',  monthlyBtn: '$4.99/mo',  annual: '$39.99/yr · ~$3.33/mo', annualBtn: '$39.99/yr', savings: 33 },
+    };
+
+    let stripe = null;
+    let checkout = null;
+    let selectedPlan = 'carrier';
+    let selectedPeriod = 'annual';
+    let validatedReferralCode = null;
+
+    async function init() {
+      const res = await fetch(API_BASE + '/api/stripe/config');
+      const { publishableKey } = await res.json();
+      stripe = Stripe(publishableKey);
+
+      // Parse URL params for pre-selection
+      const params = new URLSearchParams(window.location.search);
+      const tier = params.get('tier');
+      const period = params.get('period');
+      if (tier === 'guardian') selectPlan('guardian', false);
+      if (period === 'monthly') selectPeriod('monthly', false);
+
+      await loadCheckout();
+    }
+
+    function selectPlan(plan, reload = true) {
+      selectedPlan = plan;
+      document.getElementById('btn-carrier').className = 'plan-btn' + (plan === 'carrier' ? ' active-carrier' : '');
+      document.getElementById('btn-guardian').className = 'plan-btn' + (plan === 'guardian' ? ' active-guardian' : '');
+      updateSummary();
+      if (reload) loadCheckout();
+    }
+
+    function selectPeriod(period, reload = true) {
+      selectedPeriod = period;
+      document.getElementById('btn-monthly').className = 'period-btn' + (period === 'monthly' ? ' active' : '');
+      document.getElementById('btn-annual').className = 'period-btn' + (period === 'annual' ? ' active' : '');
+      updateSummary();
+      if (reload) loadCheckout();
+    }
+
+    function updateSummary() {
+      const p = PRICES[selectedPlan];
+      const isAnnual = selectedPeriod === 'annual';
+      const label = isAnnual ? p.annual : p.monthly;
+      document.getElementById('price-summary').textContent =
+        `${selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1)} · ${label}`;
+      document.getElementById('savings-badge').textContent =
+        `Save ${PRICES[selectedPlan].savings}%`;
+
+      // Update the price shown in each plan button
+      document.querySelector('#btn-carrier small').textContent =
+        isAnnual ? PRICES.carrier.annualBtn : PRICES.carrier.monthlyBtn;
+      document.querySelector('#btn-guardian small').textContent =
+        isAnnual ? PRICES.guardian.annualBtn : PRICES.guardian.monthlyBtn;
+    }
+
+    async function loadCheckout() {
+      if (checkout) { await checkout.destroy(); checkout = null; }
+      document.getElementById('checkout-container').innerHTML = '<div class="loading">Loading secure checkout…</div>';
+      document.getElementById('error-msg').style.display = 'none';
+
+      try {
+        checkout = await stripe.initEmbeddedCheckout({
+          fetchClientSecret: async () => {
+            const res = await fetch(API_BASE + '/api/stripe/create-checkout', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ tier: selectedPlan, period: selectedPeriod }),
+            });
+            const { clientSecret, error } = await res.json();
+            if (error) throw new Error(error);
+            return clientSecret;
+          },
+        });
+        document.getElementById('checkout-container').innerHTML = '';
+        checkout.mount('#checkout-container');
+      } catch (err) {
+        document.getElementById('error-msg').textContent = 'Unable to load checkout: ' + err.message;
+        document.getElementById('error-msg').style.display = 'block';
+        document.getElementById('checkout-container').innerHTML = '';
+      }
+    }
+
+    async function applyReferral() {
+      const input  = document.getElementById('referral-input');
+      const status = document.getElementById('referral-status');
+      const code   = input.value.trim().toUpperCase();
+      if (!code) return;
+
+      input.className = '';
+      status.className = 'referral-status';
+      status.style.display = 'none';
+
+      try {
+        const res  = await fetch(API_BASE + '/api/referral/validate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code }),
+        });
+        const data = await res.json();
+        if (data.valid) {
+          validatedReferralCode = code;
+          sessionStorage.setItem('cg_referral', code);
+          input.className = 'valid';
+          status.textContent = '✓ Referral code applied — you\'ll get 3 months free after subscribing';
+          status.className = 'referral-status ok';
+          status.style.display = 'block';
+        } else {
+          validatedReferralCode = null;
+          input.className = 'invalid';
+          status.textContent = data.reason || 'Invalid code';
+          status.className = 'referral-status err';
+          status.style.display = 'block';
+        }
+      } catch {
+        status.textContent = 'Could not validate code — continue without it or try again';
+        status.className = 'referral-status err';
+        status.style.display = 'block';
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>

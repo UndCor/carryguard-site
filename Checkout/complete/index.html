@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CarryGuard — You're In</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0f0f0f;
+      color: #f3f4f6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    header {
+      width: 100%;
+      max-width: 480px;
+      padding: 24px 20px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-dot { width: 10px; height: 10px; background: #22c55e; border-radius: 50%; }
+    header h1 { font-size: 20px; font-weight: 800; }
+    .container {
+      width: 100%;
+      max-width: 480px;
+      padding: 40px 20px 64px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    /* ── Loading ── */
+    .spinner {
+      width: 36px; height: 36px;
+      border: 3px solid #1f2937;
+      border-top-color: #22c55e;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 60px auto 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-text { color: #4b5563; font-size: 14px; }
+
+    /* ── Success ── */
+    .check-circle {
+      width: 64px; height: 64px;
+      background: #052e16;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      font-size: 28px;
+    }
+    h2 { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+    .subtitle { color: #6b7280; font-size: 15px; margin-bottom: 32px; }
+    .tier-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 32px;
+    }
+    .tier-carrier  { background: #052e16; color: #22c55e; }
+    .tier-guardian { background: #1e1b4b; color: #818cf8; }
+
+    /* ── Referral bonus ── */
+    .referral-bonus {
+      background: #052e16;
+      border: 1px solid #166534;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      width: 100%;
+      text-align: left;
+    }
+    .referral-bonus .bonus-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #22c55e;
+      margin-bottom: 4px;
+    }
+    .referral-bonus .bonus-text { font-size: 14px; color: #d1fae5; }
+
+    /* ── Download CTA ── */
+    .cta-section { width: 100%; margin-top: 8px; }
+    .cta-label { font-size: 13px; color: #4b5563; margin-bottom: 16px; }
+    .dl-btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: none;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .dl-android { background: #22c55e; color: #052e16; }
+    .dl-android:hover { background: #16a34a; }
+    .dl-ios {
+      background: #1f2937;
+      color: #6b7280;
+      cursor: default;
+    }
+    .dl-ios small { display: block; font-size: 11px; font-weight: 400; margin-top: 2px; }
+
+    /* ── Error ── */
+    .error-box {
+      background: #1f0a0a;
+      border: 1px solid #7f1d1d;
+      color: #f87171;
+      border-radius: 10px;
+      padding: 16px;
+      font-size: 14px;
+      margin-top: 32px;
+      width: 100%;
+    }
+
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-dot"></div>
+    <h1>CarryGuard</h1>
+  </header>
+
+  <div class="container">
+    <!-- Loading state -->
+    <div id="state-loading">
+      <div class="spinner"></div>
+      <p class="loading-text">Confirming your subscription…</p>
+    </div>
+
+    <!-- Success state -->
+    <div id="state-success" class="hidden">
+      <div class="check-circle">✓</div>
+      <h2>You're in.</h2>
+      <p class="subtitle" id="success-subtitle">Your subscription is active.</p>
+      <div class="tier-badge" id="tier-badge"></div>
+
+      <div class="referral-bonus hidden" id="referral-bonus">
+        <div class="bonus-label">Referral bonus applied</div>
+        <div class="bonus-text" id="bonus-text"></div>
+      </div>
+
+      <div class="cta-section">
+        <p class="cta-label">Download the app to get started</p>
+        <a class="dl-btn dl-android"
+           href="https://expo.dev/artifacts/eas/7FyWK4nuPis6DH5bGWqRG.apk">
+          Download for Android
+        </a>
+        <span class="dl-btn dl-ios">
+          iOS Coming Soon
+          <small>Pending App Store review</small>
+        </span>
+      </div>
+    </div>
+
+    <!-- Error state -->
+    <div id="state-error" class="hidden">
+      <div class="error-box" id="error-text">
+        Something went wrong confirming your subscription. Your payment was processed — please
+        contact support if this persists.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API = 'https://optimistic-wonder-production-22e8.up.railway.app';
+
+    function show(id) {
+      ['state-loading', 'state-success', 'state-error'].forEach(s => {
+        document.getElementById(s).classList.toggle('hidden', s !== id);
+      });
+    }
+
+    async function run() {
+      const params    = new URLSearchParams(window.location.search);
+      const sessionId = params.get('session_id');
+      const referralCode = sessionStorage.getItem('cg_referral');
+
+      if (!sessionId) {
+        show('state-error');
+        return;
+      }
+
+      // 1. Fetch session details
+      let session;
+      try {
+        const res = await fetch(`${API}/api/stripe/session/${encodeURIComponent(sessionId)}`);
+        session   = await res.json();
+      } catch {
+        show('state-error');
+        return;
+      }
+
+      if (session.status !== 'complete') {
+        document.getElementById('error-text').textContent =
+          'Your payment is still processing. Check your email for confirmation — it usually arrives within a minute.';
+        show('state-error');
+        return;
+      }
+
+      const { email, tier, period } = session;
+      const userId       = email;
+      const entitlementId = tier ?? 'carrier';
+
+      // 2. Ensure referral codes are generated for this subscriber (idempotent)
+      if (userId) {
+        try {
+          await fetch(`${API}/api/referral/generate`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId }),
+          });
+        } catch {
+          // Non-fatal — webhook will handle it
+        }
+      }
+
+      // 3. Redeem referral code if one was applied at checkout
+      if (referralCode && userId) {
+        try {
+          const res  = await fetch(`${API}/api/referral/redeem`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              code: referralCode,
+              userId,
+              entitlementId,
+              isNewSubscriber: true,
+            }),
+          });
+          const data = await res.json();
+          if (data.success) {
+            sessionStorage.removeItem('cg_referral');
+            const bonus = document.getElementById('referral-bonus');
+            bonus.classList.remove('hidden');
+            document.getElementById('bonus-text').textContent =
+              'Nice — you\'ve got 3 bonus months on us. The person who shared the code gets 2 months free too. ' +
+              'We don\'t know who that is, and we don\'t want to.';
+          }
+        } catch {
+          // Non-fatal — show success anyway
+        }
+      }
+
+      // 4. Show success UI
+      const tierLabel = tier
+        ? tier.charAt(0).toUpperCase() + tier.slice(1)
+        : 'Carrier';
+      const periodLabel = period === 'annual' ? 'Annual' : 'Monthly';
+
+      document.getElementById('success-subtitle').textContent =
+        `${tierLabel} ${periodLabel} — your subscription is active.`;
+
+      const badge = document.getElementById('tier-badge');
+      badge.textContent = tierLabel;
+      badge.className   = `tier-badge tier-${tier ?? 'carrier'}`;
+
+      show('state-success');
+    }
+
+    run();
+  </script>
+</body>
+</html>
