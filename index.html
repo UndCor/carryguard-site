@@ -558,7 +558,62 @@
     .legal-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
     .legal p { font-size: 12px; color: var(--text-dim); line-height: 1.65; }
 
-    footer { padding: 20px 0 36px; display: flex; justify-content: space-between; align-items: center; }
+    footer { padding: 20px 0 36px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+    .footer-support { font-size: 12px; color: var(--text-dim); }
+
+    /* Privacy / Built Different section */
+    .privacy-section {
+      padding: 64px 0 48px;
+      max-width: 720px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .privacy-headline {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(28px, 4vw, 40px);
+      color: var(--text);
+      margin: 8px 0 16px;
+    }
+    .privacy-intro {
+      font-size: 18px;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 24px;
+    }
+    .privacy-body {
+      text-align: left;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--green-sig);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin-bottom: 28px;
+    }
+    .privacy-body p {
+      color: var(--text-mid);
+      font-size: 15px;
+      line-height: 1.75;
+      margin-bottom: 14px;
+    }
+    .privacy-body p:last-child { margin-bottom: 0; }
+    .trust-badges {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+    }
+    .trust-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 8px 16px;
+      font-size: 13px;
+      color: var(--text-mid);
+    }
+    .trust-icon { font-size: 16px; }
     footer span { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-dim); }
   </style>
 </head>
@@ -753,6 +808,38 @@
     </div>
   </section>
 
+  <!-- Built Different / Privacy section -->
+  <section class="privacy-section">
+    <div class="section-label">Why CarryGuard is different</div>
+    <h2 class="privacy-headline">Built different. On purpose.</h2>
+    <p class="privacy-intro">Most apps want your data. CarryGuard doesn't.</p>
+
+    <div class="privacy-body">
+      <p>No accounts required. No personal information collected. No location history on our servers. Your carry habits are your business — not ours, not anyone else's.</p>
+      <p>Everything is written in plain English. Not because we have to. Because you deserve to understand what you're using.</p>
+      <p>There's an opt-in program that helps expand gun rights nationwide by anonymously reporting carry restrictions to legal organizations like SAF, FPC, and GOA. It is off by default. It will always be off by default. You choose — or you don't. No pressure either way.</p>
+    </div>
+
+    <div class="trust-badges">
+      <div class="trust-badge">
+        <span class="trust-icon">🛡</span>
+        <span class="trust-label">No data collected</span>
+      </div>
+      <div class="trust-badge">
+        <span class="trust-icon">👤</span>
+        <span class="trust-label">No account required</span>
+      </div>
+      <div class="trust-badge">
+        <span class="trust-icon">📄</span>
+        <span class="trust-label">Plain English only</span>
+      </div>
+      <div class="trust-badge">
+        <span class="trust-icon">⚙️</span>
+        <span class="trust-label">Opt-in off by default</span>
+      </div>
+    </div>
+  </section>
+
   <div class="legal">
     <span class="legal-icon">⚠</span>
     <p>CarryGuard is an informational tool and does not constitute legal advice. Laws change frequently. Always verify carry status with a qualified attorney before carrying in an unfamiliar jurisdiction. We surface the data — you make the call.</p>
@@ -760,7 +847,8 @@
 
   <footer>
     <span>CarryGuard</span>
-    <span>© 2026 · Early access · All rights reserved</span>
+    <span>© 2026 · All rights reserved</span>
+    <span class="footer-support">No support queue. No ticket system. If it's broken, I already know — and I'm already fixing it. &nbsp;<a href="https://getcarryguard.com/status" style="color:var(--accent);">Status</a></span>
   </footer>
 
 </div>
