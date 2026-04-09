@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — CarryGuard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0b1f11;
+      --bg-card:   #0f2916;
+      --bg-card2:  #122e19;
+      --border:    rgba(255,255,255,0.07);
+      --green-dim: #1a4027;
+      --accent:    #c8a84b;
+      --accent-dim:#8a6e2a;
+      --text:      #e8ede9;
+      --text-mid:  #9bb09f;
+      --text-dim:  #5a7360;
+      --red:       #c0392b;
+      --green-sig: #27ae60;
+      --amber:     #e67e22;
+      --radius:    12px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 900px;
+      height: 700px;
+      background: radial-gradient(ellipse, rgba(40,100,55,0.22) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .site-wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px 0 0;
+    }
+
+    .nav-logo {
+      font-family: 'DM Mono', monospace;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text);
+      letter-spacing: 0.04em;
+    }
+
+    .badge-early {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--accent);
+      background: rgba(200,168,75,0.1);
+      border: 1px solid rgba(200,168,75,0.25);
+      padding: 4px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .section-sep { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--accent-dim);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 22px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .feature-card:hover { border-color: rgba(255,255,255,0.13); background: var(--bg-card2); }
+
+    .feature-title { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--text); margin-bottom: 8px; line-height: 1.2; }
+    .feature-desc { font-size: 14px; color: var(--text-mid); line-height: 1.65; }
+    .feature-desc + .feature-desc { margin-top: 10px; }
+    .feature-desc a { color: var(--accent); text-decoration: none; }
+    .feature-desc a:hover { text-decoration: underline; }
+
+    .legal { border-top: 1px solid var(--border); padding: 28px 0; display: flex; align-items: flex-start; gap: 14px; }
+    .legal-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+    .legal p { font-size: 12px; color: var(--text-dim); line-height: 1.65; }
+
+    footer { padding: 20px 0 36px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+    .footer-support { font-size: 12px; color: var(--text-dim); }
+    footer span { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-dim); }
+
+    .privacy-section {
+      padding: 64px 0 24px;
+      max-width: 820px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .privacy-headline {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(36px, 5vw, 56px);
+      color: var(--text);
+      margin: 8px 0 14px;
+      line-height: 1.1;
+    }
+    .privacy-intro {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      color: var(--text-mid);
+      letter-spacing: 0.03em;
+      margin-bottom: 28px;
+    }
+    .privacy-body {
+      text-align: left;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--green-sig);
+      border-radius: var(--radius);
+      padding: 22px 26px;
+    }
+    .privacy-body p {
+      color: var(--text-mid);
+      font-size: 15px;
+      line-height: 1.75;
+    }
+    .privacy-body strong { color: var(--text); font-weight: 500; }
+
+    .policy-body {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 10px 0 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+  </style>
+</head>
+<body>
+<div class="site-wrap">
+
+  <nav>
+    <a href="/" class="nav-logo" style="text-decoration:none;">CarryGuard</a>
+    <span class="badge-early">Early Access</span>
+  </nav>
+
+  <section class="privacy-section">
+    <div class="section-label">Legal</div>
+    <h1 class="privacy-headline">Privacy Policy</h1>
+    <p class="privacy-intro">Effective date: April 8, 2026 · Ironwood Dynamics LLC</p>
+
+    <div class="privacy-body">
+      <p><strong>The short version:</strong> CarryGuard does not collect your name, email address, phone number, or any information that identifies you as a person. We never have and we never will.</p>
+    </div>
+  </section>
+
+  <hr class="section-sep" />
+
+  <div class="policy-body">
+
+    <div class="feature-card">
+      <div class="feature-title">Who we are</div>
+      <p class="feature-desc">CarryGuard is built and operated by Ironwood Dynamics LLC, a Wyoming limited liability company. Questions or concerns about this policy can be sent to <a href="mailto:hello@getcarryguard.com">hello@getcarryguard.com</a>.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-title">What we collect</div>
+      <p class="feature-desc">CarryGuard generates an anonymous UUID on first launch. That UUID, along with your subscription tier and subscription status, is the entire set of data we store. We do not collect your name, email address, phone number, mailing address, date of birth, social security number, or any other personally identifiable information. There is no account to create and no profile to fill out.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-title">Location data</div>
+      <p class="feature-desc">GPS is used on-device only to determine which jurisdiction you are currently in. Your precise coordinates are never transmitted to our servers — not now, not ever. On the Guardian tier, location data that you choose to share during a duress event is sent only to the trusted contacts you have configured yourself. It never passes through Ironwood Dynamics.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-title">The encrypted vault (Carrier and Guardian)</div>
+      <p class="feature-desc">Documents stored in the CarryGuard vault are encrypted on-device using AES-256. We cannot read the contents of your vault and we have no mechanism to decrypt it. The vault PIN is stored only on your device and never leaves it. If you lose your PIN, we cannot recover your vault for you — that is the trade-off of a truly private vault.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-title">Guardian tier duress features</div>
+      <p class="feature-desc">Guardian tier duress transmissions — GPS, audio, and alerts — are sent directly to the trusted contacts you designate inside the app. Ironwood Dynamics does not receive, store, or have any access to duress data. The duress system is entirely opt-in: it is configured by you, triggered by you, and routed only to people you have chosen.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-title">Third-party services</div>
+      <p class="feature-desc">CarryGuard uses a small number of third-party services to keep the app running. RevenueCat handles subscription entitlement state and receives only your anonymous UUID — no PII is passed. Stripe processes payments; we do not store card details on our servers. Railway hosts our API and processes only your anonymous UUID and subscription status.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-title">Crash reporting and analytics</div>
+      <p class="feature-desc">We collect anonymous crash reports containing the operating system version, app version, and stack trace so we can fix bugs. No UUID is attached to these reports. CarryGuard contains no behavioral analytics, no tracking pixels, and no advertising SDKs of any kind.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-title">Data retention and deletion</div>
+      <p class="feature-desc">Your anonymous UUID and subscription tier are retained for up to 90 days after cancellation for billing dispute purposes, and then permanently deleted. You can request deletion at any time by emailing <a href="mailto:hello@getcarryguard.com">hello@getcarryguard.com</a> with the UUID shown in your app settings. Deletion requests are confirmed within 7 business days.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-title">Children</div>
+      <p class="feature-desc">CarryGuard is not directed at users under the age of 18, and we do not knowingly collect any data from minors.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-title">Changes to this policy</div>
+      <p class="feature-desc">If we make material changes to this policy, we will update the effective date above and surface an in-app notice so you are not caught off guard. The core anonymous-by-design architecture of CarryGuard will never change.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-title">Contact</div>
+      <p class="feature-desc">Questions about this policy or about your data can be sent to <a href="mailto:hello@getcarryguard.com">hello@getcarryguard.com</a>. Ironwood Dynamics LLC, Wyoming.</p>
+    </div>
+
+  </div>
+
+  <div class="legal">
+    <span class="legal-icon">⚠</span>
+    <p>CarryGuard is an informational tool and does not constitute legal advice. Laws change frequently. Always verify carry status with a qualified attorney before carrying in an unfamiliar jurisdiction. We surface the data — you make the call.</p>
+  </div>
+
+  <footer>
+    <span>CarryGuard</span>
+    <span>© 2026 · All rights reserved</span>
+    <span class="footer-support">No support queue. No ticket system. If it's broken, I already know — and I'm already fixing it. &nbsp;<a href="https://getcarryguard.com/status" style="color:var(--accent);">Status</a></span>
+  </footer>
+
+</div>
+</body>
+</html>
