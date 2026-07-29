@@ -1,0 +1,24 @@
+﻿# === IRONWOOD-BACKUP MANAGED BLOCK (generated) ===
+node_modules/
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+.next/
+.turbo/
+.parcel-cache/
+.pytest_cache/
+.mypy_cache/
+.godot/
+.gradle/
+.idea/
+.vs/
+Binaries/
+Intermediate/
+DerivedDataCache/
+Thumbs.db
+.DS_Store
+# === END IRONWOOD-BACKUP MANAGED BLOCK ===
+
